@@ -1,12 +1,11 @@
 package org.sxs.tacocloud.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 import org.sxs.tacocloud.domain.Ingredient;
 import org.sxs.tacocloud.domain.Ingredient.Type;
 import org.sxs.tacocloud.domain.Taco;
@@ -52,16 +51,28 @@ public class DesignTacoController {
 	}
 	@ModelAttribute(name = "taco")
 	public Taco taco() {
-		return new Taco();
+		Taco taco = new Taco();
+		return taco;
 	}
 	@GetMapping
 	public String showDesignForm() {
 		return "design";
 	}
+	@PostMapping
+	public String processTaco(@Valid @ModelAttribute("taco") Taco taco1, Errors errors,
+	                          @ModelAttribute("tacoOrder") TacoOrder tacoOrder) {
+		if (errors.hasErrors()) {
+			return "design";
+		}
+		tacoOrder.addTaco(taco1);
+		log.info("Processing taco:{}", taco1.toString());
+		log.info("Processing tacoOrder:{}", tacoOrder.getTacos().size());
+		return "redirect:/orders/current";
+	}
 	private Iterable<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
 		return ingredients
 				.stream()
 				.filter(x -> x.getType().equals(type))
-				.collect(Collectors.toList());
+				.toList();
 	}
 }
