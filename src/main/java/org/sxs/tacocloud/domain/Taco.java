@@ -3,6 +3,8 @@ package org.sxs.tacocloud.domain;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,9 +15,11 @@ import java.util.List;
  * @author sxs
  * @date 2023/7/22
  */
+@Table
 @Data
 public class Taco implements Serializable {
     public static final long serialVersionUID = 1L;
+    @Id
     private Long id;
     private Date createdAt = new Date();
     @NotNull
