@@ -1,0 +1,37 @@
+@startuml
+entity Taco_Order{
+    * id:identity
+    --
+    *delivery_name: varchar
+    *delivery_street: varchar
+    *delivery_city: varchar
+    *delivery_state: varchar
+    *delivery_zip: varchar
+    *cc_number: varchar
+    *cc_expiration: varchar
+    *cc_cvv: varchar
+    *placed_at: timestamp
+}
+entity Taco{
+    *id: identity
+    --
+    *name: varchar
+    *taco_order: bigint
+    *taco_order_key: bigint
+    *createdAt: timestamp
+}
+entity Ingredient_Ref{
+     taco: bigint
+     taco_key: bigint
+     ingredient: varchar
+}
+entity Ingredient{
+    *id: varchar
+    --
+    *name: varchar
+    *type: varchar
+}
+Taco_Order "1"-"*" Taco
+Taco "1"--"*" Ingredient_Ref
+Ingredient "*"-"1" Ingredient_Ref
+@enduml
