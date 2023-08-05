@@ -1,4 +1,4 @@
-package org.sxs.tacocloud.controller;
+package org.sxs.tacocloud.web.api;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -6,11 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.sxs.tacocloud.domain.Ingredient;
-import org.sxs.tacocloud.domain.Ingredient.Type;
-import org.sxs.tacocloud.domain.Taco;
-import org.sxs.tacocloud.domain.TacoOrder;
-import org.sxs.tacocloud.repository.IngredientRepository;
+import org.sxs.tacocloud.domain.entity.Ingredient;
+import org.sxs.tacocloud.domain.entity.Ingredient.Type;
+import org.sxs.tacocloud.domain.entity.Taco;
+import org.sxs.tacocloud.domain.entity.TacoOrder;
+import org.sxs.tacocloud.domain.repository.IngredientRepository;
 
 import java.util.List;
 

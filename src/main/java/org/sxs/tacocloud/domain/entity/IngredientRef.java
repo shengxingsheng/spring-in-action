@@ -1,4 +1,4 @@
-package org.sxs.tacocloud.domain;
+package org.sxs.tacocloud.domain.entity;
 
 import lombok.Data;
 

@@ -3,7 +3,8 @@ package org.sxs.tacocloud.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.sxs.tacocloud.domain.Ingredient;
+import org.sxs.tacocloud.domain.entity.Ingredient;
+import org.sxs.tacocloud.domain.repository.IngredientRepository;
 
 import java.util.Optional;
 

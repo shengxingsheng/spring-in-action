@@ -1,4 +1,4 @@
-package org.sxs.tacocloud.controller;
+package org.sxs.tacocloud.web.api;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.sxs.tacocloud.domain.TacoOrder;
-import org.sxs.tacocloud.repository.OrderRepository;
+import org.sxs.tacocloud.domain.entity.TacoOrder;
+import org.sxs.tacocloud.domain.repository.OrderRepository;
 
 /**
  * @Author sxs

@@ -1,4 +1,4 @@
-package org.sxs.tacocloud.domain;
+package org.sxs.tacocloud.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

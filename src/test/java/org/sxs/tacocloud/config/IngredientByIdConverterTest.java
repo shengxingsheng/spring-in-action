@@ -2,8 +2,8 @@ package org.sxs.tacocloud.config;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.sxs.tacocloud.domain.Ingredient;
-import org.sxs.tacocloud.repository.IngredientRepository;
+import org.sxs.tacocloud.domain.entity.Ingredient;
+import org.sxs.tacocloud.domain.repository.IngredientRepository;
 
 import java.util.Optional;
 

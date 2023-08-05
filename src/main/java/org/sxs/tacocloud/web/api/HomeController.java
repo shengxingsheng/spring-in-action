@@ -1,4 +1,4 @@
-package org.sxs.tacocloud.controller;
+package org.sxs.tacocloud.web.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.sxs.tacocloud.config.WebConfig;

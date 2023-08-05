@@ -1,4 +1,4 @@
-package org.sxs.tacocloud.controller;
+package org.sxs.tacocloud.web;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +23,6 @@ public class HomeControllerTest {
                 .andExpect(content().string(    //期望包含“Welcome to...”
                         containsString("Welcome to...")));
     }
+
 
 }

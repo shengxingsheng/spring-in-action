@@ -1,8 +1,8 @@
-package org.sxs.tacocloud.repository;
+package org.sxs.tacocloud.domain.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.sxs.tacocloud.domain.TacoOrder;
+import org.sxs.tacocloud.domain.entity.TacoOrder;
 
 import java.util.Date;
 import java.util.List;

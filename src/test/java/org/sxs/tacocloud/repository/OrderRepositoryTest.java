@@ -4,10 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.sxs.tacocloud.domain.Ingredient;
-import org.sxs.tacocloud.domain.Ingredient.Type;
-import org.sxs.tacocloud.domain.Taco;
-import org.sxs.tacocloud.domain.TacoOrder;
+import org.sxs.tacocloud.domain.entity.Ingredient;
+import org.sxs.tacocloud.domain.entity.Ingredient.Type;
+import org.sxs.tacocloud.domain.entity.Taco;
+import org.sxs.tacocloud.domain.entity.TacoOrder;
+import org.sxs.tacocloud.domain.repository.IngredientRepository;
+import org.sxs.tacocloud.domain.repository.OrderRepository;
 
 import java.util.Date;
 import java.util.List;
