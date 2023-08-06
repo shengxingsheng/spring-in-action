@@ -33,6 +33,8 @@ public class RunnerConfig {
             repo.save(new Ingredient("SRCR", "Sour Cream", Type.SAUCE));
             userRepository.save(new User("sxs", encoder.encode("123456"), "sheng",
                     "demo", "dmeo", "demo", "1212", "12345678900"));
+            userRepository.save(new User("sxs1", encoder.encode("123456"), "sheng",
+                    "demo", "dmeo", "demo", "1212", "12345678900"));
         };
     }
 

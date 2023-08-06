@@ -7,6 +7,11 @@
 <body>
 <h1>Welcome to...</h1>
 <img th:src="@{/images/TacoCloud.png}"/>
-<a th:href="@{/design}">to design</a>
+<br>
+<a th:href="@{/design}">to design</a><br>
+<a th:href="@{/admin}">to admin</a><br>
+<form method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
 </body>
 </html>
