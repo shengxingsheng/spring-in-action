@@ -10,3 +10,6 @@ spring:
             clientId: 1d5b6b02971489b180a7
             clientSecret: f972d3e3c004bd50bf2ac970d513f19a56bebc49
             scope: user,user:email
+logging:
+  level:
+    root: trace

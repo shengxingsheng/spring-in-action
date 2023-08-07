@@ -1,8 +1,53 @@
 @startuml
-activate
-StandardWrapperValve.invoke-> ApplicationFilterChain: ;
-Bob --> Alice: Authentication Response
+StandardHostValve++
+StandardHostValve->StandardWrapperValve++: invoke
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: Another authentication Response
+StandardWrapperValve-> ApplicationFilterChain++:filterChain.doFilter(res, req)
+ApplicationFilterChain -> ApplicationFilterChain: internalDoFilter(req,res)
+ApplicationFilterChain -> CharacterEncodingFilter++: doFilter(req, res)
+CharacterEncodingFilter -> ApplicationFilterChain++: filterChain.doFilter(res, req)
+
+
+ApplicationFilterChain -> ApplicationFilterChain: internalDoFilter(req,res)
+ApplicationFilterChain -> FormContentFilter++: doFilter(req,res)
+FormContentFilter->ApplicationFilterChain++: doFilter(req,res)
+
+
+ApplicationFilterChain -> ApplicationFilterChain: internalDoFilter(req,res)
+ApplicationFilterChain -> RequestContextFilter++: doFilter(req,res)
+RequestContextFilter->ApplicationFilterChain++: doFilter(req,res)
+
+ApplicationFilterChain -> ApplicationFilterChain: internalDoFilter(req,res)
+ApplicationFilterChain -> DelegatingFilterProxy++: doFilter(req,res)
+DelegatingFilterProxy -> DelegatingFilterProxy: invokeDelegate(delegateToUse, request, response, filterChain)
+DelegatingFilterProxy->FilterChainProxy++:delegate.doFilter(request, response, filterChain)
+FilterChainProxy->FilterChainProxy:doFilterInternal(request, response, chain)
+FilterChainProxy->FilterChainProxy:getFilters(req)
+FilterChainProxy->VirtualFilterChain++: virtualFilterChain.doFilter(firewallRequest, firewallResponse)
+VirtualFilterChain->DisableEncodeUrlFilter++: doFilterInternal
+DisableEncodeUrlFilter->VirtualFilterChain:doFilter
+DisableEncodeUrlFilter--
+
+VirtualFilterChain->WebAsyncManagerIntegrationFilter++:doFilterInternal
+WebAsyncManagerIntegrationFilter->VirtualFilterChain:doFilter
+WebAsyncManagerIntegrationFilter--
+
+
+VirtualFilterChain->SecurityContextHolderFilter++:doFilterInternal
+
+/'
+HeaderWriterFilter
+CsrfFilter
+ExceptionTranslationFilter
+AuthorizationFilter doFilter抛出异常
+'/
+SecurityContextHolderFilter->ExceptionTranslationFilter++:doFilter
+ExceptionTranslationFilter->AuthorizationFilter++:doFilter
+AuthorizationFilter->ExceptionTranslationFilter:throw new AccessDeniedException("Access Denied")
+
+ExceptionTranslationFilter->ExceptionTranslationFilter:handleSpringSecurityException(req, res, chain, securityException)
+ExceptionTranslationFilter->ExceptionTranslationFilter:handleAccessDeniedException(req, res, chain,(AccessDeniedException)e)
+
+StandardHostValve->StandardHostValve:status(res,req) \n find errorPage
+StandardHostValve->StandardHostValve:custom((res,req, errorPage) \n 转发给errorPage指定的路径
 @enduml

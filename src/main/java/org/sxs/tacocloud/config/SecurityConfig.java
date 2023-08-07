@@ -88,9 +88,7 @@ public class SecurityConfig {
                             .requestMatchers(new AntPathRequestMatcher("/admin"), new AntPathRequestMatcher("/admin/**"))
                             .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN')"))
                             .requestMatchers(new AntPathRequestMatcher("/orders"), new AntPathRequestMatcher("/orders/**"), new AntPathRequestMatcher("/design"), new AntPathRequestMatcher("/design/**"))
-                            .access(new WebExpressionAuthorizationManager(
-                                    "hasAnyRole('ROLE_USER')" +
-                                            "&& T(java.time.LocalDate).now().getDayOfWeek().equals(T(java.time.DayOfWeek).SUNDAY)"))
+                            .access(new WebExpressionAuthorizationManager("hasRole('ROLE_USER')"))
                             .requestMatchers(new AntPathRequestMatcher("/"), AntPathRequestMatcher.antMatcher("/**"))
                             .access(new WebExpressionAuthorizationManager("permitAll()"));
                 })
@@ -99,7 +97,6 @@ public class SecurityConfig {
                 )
                 .oauth2Login(config -> config.loginPage("/login"))
                 .logout(config -> config.logoutSuccessUrl("/"))
-
                 .csrf(csrfConfigurer -> csrfConfigurer.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
                 .headers(headers -> headers.frameOptions(config -> config.sameOrigin()))
                 .build();
