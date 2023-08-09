@@ -1,7 +1,13 @@
+server:
+  port: 8443
+  ssl:
+    key-store: file:///C:/Users/sxs/projects/IdeaProjects/demo/taco-cloud/mykeys.jks
+    key-store-password: letmein
+    key-password: letmein
 spring:
   datasource:
     generate-unique-name: false
-    name: tacocloud
+    name: TacoCloud
   security:
     oauth2:
       client:
@@ -10,6 +16,20 @@ spring:
             clientId: 1d5b6b02971489b180a7
             clientSecret: f972d3e3c004bd50bf2ac970d513f19a56bebc49
             scope: user,user:email
+  application:
+    name: TacoCloud
 logging:
+  file:
+    name: C:/Users/sxs/projects/IdeaProjects/demo/taco-cloud/log/${spring.application.name}.log
   level:
-    root: trace
+    root: info
+    org:
+      springframework: debug
+  logback:
+    rollingpolicy:
+      clean-history-on-start: false
+      max-file-size: 10MB
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.log
+
+
+
