@@ -1,8 +1,10 @@
 package org.sxs.tacocloud.domain.repository;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.sxs.tacocloud.domain.entity.TacoOrder;
+import org.sxs.tacocloud.domain.entity.User;
 
 import java.util.Date;
 import java.util.List;
@@ -22,5 +24,7 @@ public interface OrderRepository extends CrudRepository<TacoOrder, Long> {
 
     @Query("from TacoOrder o where o.deliveryCity='Seattle'")
     List<TacoOrder> readOrdersDeliveredInSeattle();
+
+    List<TacoOrder> findByUserOrderByPlacedAtDesc(User user, PageRequest page);
 
 }

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @Author sxs
@@ -33,14 +34,15 @@ public class User implements UserDetails {
     private final String state;
     private final String zip;
     private final String phoneNumber;
+    private final String roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (username.equals("sxs")) {
-            return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } else {
-            return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        String[] split = roles.split(";");
+        if (split.length == 0) {
+            return Collections.EMPTY_LIST;
         }
+        return Arrays.asList(split).stream().map(role -> new SimpleGrantedAuthority(role)).toList();
     }
 
     @Override

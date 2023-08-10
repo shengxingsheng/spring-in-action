@@ -18,10 +18,11 @@ public class RegistrationForm {
     private final String state;
     private final String zip;
     private final String phoneNumber;
+    private final String roles;
 
     public User toUser(PasswordEncoder encoder) {
 
-        return new User(username, encoder.encode(password), fullname, street, city, state, zip, phoneNumber);
+        return new User(username, encoder.encode(password), fullname, street, city, state, zip, phoneNumber, roles);
 
     }
 }

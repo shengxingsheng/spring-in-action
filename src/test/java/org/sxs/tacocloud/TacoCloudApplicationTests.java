@@ -1,6 +1,7 @@
 package org.sxs.tacocloud;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -9,6 +10,8 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -86,5 +89,16 @@ class TacoCloudApplicationTests {
         encoders.put("argon2@SpringSecurity_v5_8", Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8());
         encoders.put("argon2@v1", new Argon2PasswordEncoder(32, 64, 4, 1 << 16, 15));
         return new DelegatingPasswordEncoder(encodingId, encoders);
+    }
+
+    @Test
+    void test1() {
+        String roles = "role";
+        String[] split = roles.split(";");
+        if (split[0].isEmpty()) {
+            System.out.println(Collections.EMPTY_LIST);
+            return;
+        }
+        System.out.println(Arrays.asList(split).stream().map(role -> new SimpleGrantedAuthority(role)).toList());
     }
 }

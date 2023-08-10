@@ -23,13 +23,13 @@ logging:
     name: C:/Users/sxs/projects/IdeaProjects/demo/taco-cloud/log/${spring.application.name}.log
   level:
     root: info
-    org:
-      springframework: debug
   logback:
     rollingpolicy:
       clean-history-on-start: false
       max-file-size: 10MB
       file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.log
-
+taco:
+  orders:
+    page-size: 10
 
 
