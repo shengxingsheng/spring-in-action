@@ -1,0 +1,5 @@
+server:
+  port: 443
+logging:
+  level:
+    root: warn

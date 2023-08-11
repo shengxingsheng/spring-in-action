@@ -5,6 +5,8 @@ server:
     key-store-password: letmein
     key-password: letmein
 spring:
+  profiles:
+    active: prod
   datasource:
     generate-unique-name: false
     name: TacoCloud
@@ -19,15 +21,8 @@ spring:
   application:
     name: TacoCloud
 logging:
-  file:
-    name: C:/Users/sxs/projects/IdeaProjects/demo/taco-cloud/log/${spring.application.name}.log
   level:
     root: info
-  logback:
-    rollingpolicy:
-      clean-history-on-start: false
-      max-file-size: 10MB
-      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.log
 taco:
   orders:
     page-size: 10

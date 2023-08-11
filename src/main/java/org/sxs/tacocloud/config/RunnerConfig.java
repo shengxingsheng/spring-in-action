@@ -1,8 +1,10 @@
 package org.sxs.tacocloud.config;
 
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.sxs.tacocloud.domain.entity.Ingredient;
 import org.sxs.tacocloud.domain.entity.Ingredient.Type;
@@ -26,6 +28,17 @@ import java.util.List;
  */
 @Configuration
 public class RunnerConfig {
+    @Bean
+    @Profile("prod")
+    public ApplicationRunner test() {
+        System.out.println("生产");
+        return new ApplicationRunner() {
+            @Override
+            public void run(ApplicationArguments args) throws Exception {
+            }
+        };
+    }
+
     @Bean
     public ApplicationRunner dataLoader(IngredientRepository repo, UserRepository userRepository, OrderRepository orderRepository, PasswordEncoder encoder) {
         return args -> {
