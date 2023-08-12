@@ -1,0 +1,58 @@
+package org.sxs.tacocloud.web.api;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.sxs.tacocloud.domain.entity.Taco;
+import org.sxs.tacocloud.domain.repository.TacoRepository;
+
+import java.util.Optional;
+
+/**
+ * @Author sxs
+ * @Date 2023/8/11 22:54
+ */
+//@RestController
+//@RequestMapping(path = "/api/tacos", produces = {MediaType.APPLICATION_JSON_VALUE})
+public class TacoController {
+
+    private final TacoRepository tacoRepository;
+
+    public TacoController(TacoRepository tacoRepository) {
+        this.tacoRepository = tacoRepository;
+    }
+
+    @GetMapping(params = "recent")
+    public Iterable<Taco> recentTacos() {
+        PageRequest of = PageRequest.of(0, 10, Sort.by("createdAt").descending());
+        return tacoRepository.findAll(of).getContent();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Taco> tacoByID(@PathVariable("id") Long id) {
+        Optional<Taco> taco = tacoRepository.findById(id);
+        return ResponseEntity.of(taco);
+    }
+
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<Taco> postTaco(@RequestBody Taco taco) {
+
+        if (taco.getId() != null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(tacoRepository.save(taco), HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{id}", consumes = "application/json")
+    public ResponseEntity<Taco> putTaco(@PathVariable("id") Long id, @RequestBody Taco taco) {
+
+        if (id != null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(tacoRepository.save(taco), HttpStatus.OK);
+    }
+}
+
+
