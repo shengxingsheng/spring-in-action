@@ -2,7 +2,7 @@ package tacos.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.sxs.tacocloud.domain.entity.Taco;
+import tacos.domain.entity.Taco;
 
 /**
  * @author sxs

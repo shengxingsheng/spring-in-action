@@ -2,7 +2,7 @@ package tacos.web.dto;
 
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.sxs.tacocloud.domain.entity.User;
+import tacos.domain.entity.User;
 
 /**
  * @Author sxs

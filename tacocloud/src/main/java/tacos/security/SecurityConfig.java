@@ -2,6 +2,7 @@ package tacos.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
@@ -104,10 +105,9 @@ public class SecurityConfig {
                             .requestMatchers(new AntPathRequestMatcher("/"), AntPathRequestMatcher.antMatcher("/**"))
                             .access(new WebExpressionAuthorizationManager("permitAll()"));
                 })
-                .formLogin(config -> config.loginPage("/login")
-                        .defaultSuccessUrl("/design")
-                )
-                .oauth2Login(config -> config.loginPage("/login"))
+                .formLogin(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
+                .oauth2Login(Customizer.withDefaults())
                 .logout(config -> config.logoutSuccessUrl("/"))
                 .csrf(csrfConfigurer -> csrfConfigurer
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"), new AntPathRequestMatcher("/api/**"))

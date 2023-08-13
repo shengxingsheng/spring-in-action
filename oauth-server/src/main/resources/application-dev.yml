@@ -1,0 +1,7 @@
+server:
+  port: 9090
+
+spring:
+  datasource:
+    generate-unique-name: false
+    name: authserver

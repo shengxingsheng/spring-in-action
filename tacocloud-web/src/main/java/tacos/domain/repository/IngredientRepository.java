@@ -1,7 +1,7 @@
 package tacos.domain.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import org.sxs.tacocloud.domain.entity.Ingredient;
+import tacos.domain.entity.Ingredient;
 
 /**
  * @Author sxs

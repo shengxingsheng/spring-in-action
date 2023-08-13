@@ -18,7 +18,6 @@ public class TacoCloudClient {
     }
 
     public Ingredient getIngredientById(String id) {
-        return restTemplate.getForObject("http://localhost:8080/ingredients/{id}", Ingredient.class, id);
-
+        return restTemplate.getForObject("http://localhost:8080/api/ingredients/{id}", Ingredient.class, id);
     }
 }

@@ -4,8 +4,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.sxs.tacocloud.domain.entity.TacoOrder;
-import org.sxs.tacocloud.domain.entity.User;
+import tacos.domain.entity.TacoOrder;
+import tacos.domain.entity.User;
 
 import java.util.Date;
 import java.util.List;

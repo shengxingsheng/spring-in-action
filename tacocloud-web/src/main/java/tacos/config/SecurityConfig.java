@@ -24,8 +24,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.sxs.tacocloud.domain.entity.User;
-import org.sxs.tacocloud.domain.repository.UserRepository;
+import tacos.domain.entity.User;
+import tacos.domain.repository.UserRepository;
 
 import java.util.*;
 

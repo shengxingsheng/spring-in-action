@@ -21,6 +21,7 @@
         <module>tacocloud</module>
         <module>tacocloud-web</module>
         <module>tacocloud-restclient</module>
+        <module>oauth-server</module>
     </modules>
     <properties>
         <java.version>17</java.version>

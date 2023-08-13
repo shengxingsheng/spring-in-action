@@ -1,7 +1,10 @@
 package tacos;
 
+import org.apache.catalina.connector.Connector;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,6 +24,22 @@ import java.util.List;
  */
 @Configuration
 public class DevelopmentConfig {
+
+    @Bean
+    public ServletWebServerFactory servletContainer() {
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+
+        tomcat.addAdditionalTomcatConnectors(createHttpConnector());
+        return tomcat;
+    }
+
+    private Connector createHttpConnector() {
+        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
+        connector.setScheme("http");
+        connector.setPort(8080);
+        return connector;
+    }
+
     @Bean
     @Profile("prod")
     public ApplicationRunner test() {

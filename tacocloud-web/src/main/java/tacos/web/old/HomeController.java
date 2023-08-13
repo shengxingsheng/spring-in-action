@@ -1,7 +1,8 @@
 package tacos.web.old;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.sxs.tacocloud.config.WebConfig;
+import tacos.config.WebConfig;
+
 
 /**
  * @author sxs

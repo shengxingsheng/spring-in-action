@@ -1,11 +1,12 @@
 server:
   http2:
     enabled: true
-  port: 8443
   ssl:
     key-store: file:///C:/Users/sxs/projects/IdeaProjects/demo/taco-cloud/mykeys.jks
     key-store-password: letmein
     key-password: letmein
+  port: 8443
+
 spring:
   datasource:
     generate-unique-name: false
@@ -21,6 +22,7 @@ spring:
   data:
     rest:
       base-path: /api
+#      default-media-type: application/json
 logging:
   level:
     root: debug

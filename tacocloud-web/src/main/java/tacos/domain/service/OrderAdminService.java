@@ -1,7 +1,7 @@
 package tacos.domain.service;
 
 import org.springframework.stereotype.Service;
-import org.sxs.tacocloud.domain.repository.TacoOrderRepository;
+import tacos.domain.repository.TacoOrderRepository;
 
 /**
  * @Author sxs

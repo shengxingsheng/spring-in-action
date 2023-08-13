@@ -5,8 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.sxs.tacocloud.domain.repository.UserRepository;
-import org.sxs.tacocloud.web.dto.RegistrationForm;
+import tacos.domain.repository.UserRepository;
+import tacos.web.dto.RegistrationForm;
+
 
 /**
  * @Author sxs

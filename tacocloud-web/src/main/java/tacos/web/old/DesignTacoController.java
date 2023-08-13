@@ -6,11 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.sxs.tacocloud.domain.entity.Ingredient;
-import org.sxs.tacocloud.domain.entity.Ingredient.Type;
-import org.sxs.tacocloud.domain.entity.Taco;
-import org.sxs.tacocloud.domain.entity.TacoOrder;
-import org.sxs.tacocloud.domain.repository.IngredientRepository;
+import tacos.domain.entity.Ingredient;
+import tacos.domain.entity.Ingredient.Type;
+import tacos.domain.entity.Taco;
+import tacos.domain.entity.TacoOrder;
+import tacos.domain.repository.IngredientRepository;
 
 import java.util.List;
 

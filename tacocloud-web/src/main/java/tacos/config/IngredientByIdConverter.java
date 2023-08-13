@@ -2,8 +2,8 @@ package tacos.config;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import org.sxs.tacocloud.domain.entity.Ingredient;
-import org.sxs.tacocloud.domain.repository.IngredientRepository;
+import tacos.domain.entity.Ingredient;
+import tacos.domain.repository.IngredientRepository;
 
 
 @Component

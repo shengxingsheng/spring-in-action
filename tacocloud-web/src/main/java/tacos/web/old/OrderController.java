@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.sxs.tacocloud.config.OrderProps;
-import org.sxs.tacocloud.domain.entity.TacoOrder;
-import org.sxs.tacocloud.domain.entity.User;
-import org.sxs.tacocloud.domain.repository.TacoOrderRepository;
+import tacos.config.OrderProps;
+import tacos.domain.entity.TacoOrder;
+import tacos.domain.entity.User;
+import tacos.domain.repository.TacoOrderRepository;
+
 
 /**
  * @Author sxs
