@@ -45,20 +45,35 @@ public class AuthorizationServerConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder encoder) {
+        String secret = encoder.encode("secret");
+        System.out.println("secret1:" + secret);
         RegisteredClient client = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("taco-admin-client")
-                .clientSecret(encoder.encode("secret"))
+                .clientSecret(secret)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("https://127.0.0.1:8443/login/oauth2/code/taco-admin-client")
+                .redirectUri("http://127.0.0.1:9010/login/oauth2/code/taco-admin-client")
                 .scope("writeIngredients")
                 .scope("deleteIngredients")
                 .scope(OidcScopes.OPENID)
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
-
-        return new InMemoryRegisteredClientRepository(client);
+        secret = encoder.encode("secret");
+        System.out.println("secret2:" + secret);
+        RegisteredClient client1 = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("postman-client")
+                .clientSecret(secret)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("https://oauth.pstmn.io/v1/callback")
+                .scope("writeIngredients")
+                .scope("deleteIngredients")
+                .scope(OidcScopes.OPENID)
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                .build();
+        return new InMemoryRegisteredClientRepository(client, client1);
     }
 
     @Bean

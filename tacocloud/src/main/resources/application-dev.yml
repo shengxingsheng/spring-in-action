@@ -13,6 +13,10 @@ spring:
     name: tacocloud
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+          jws-algorithms: RS256
       client:
         registration:
           github:
@@ -25,7 +29,7 @@ spring:
 #      default-media-type: application/json
 logging:
   level:
-    root: debug
+    root: trace
 taco:
   orders:
     page-size: 10

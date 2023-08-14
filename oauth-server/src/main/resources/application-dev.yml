@@ -1,7 +1,9 @@
 server:
-  port: 9090
-
+  port: 9000
 spring:
   datasource:
     generate-unique-name: false
     name: authserver
+logging:
+  level:
+    root: trace

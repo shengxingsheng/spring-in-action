@@ -91,8 +91,26 @@ public class SecurityConfig {
         };
     }
 
-
     @Bean
+    public SecurityFilterChain filterChain1(HttpSecurity httpSecurity) throws Exception {
+
+        return httpSecurity
+                .authorizeHttpRequests(authorizeHttpRequests -> {
+                    authorizeHttpRequests
+                            .requestMatchers(new AntPathRequestMatcher("/api/**"), new AntPathRequestMatcher("/api/ingredients/**"))
+                            .hasAuthority("SCOPE_writeIngredients");
+                })
+                .oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()))
+//                .formLogin(Customizer.withDefaults())
+//                .oauth2Login(Customizer.withDefaults())
+                .csrf(csrfConfigurer -> csrfConfigurer
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"), new AntPathRequestMatcher("/api/**"))
+                )
+                .headers(headers -> headers.frameOptions(config -> config.sameOrigin()))
+                .build();
+    }
+
+    //    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         return httpSecurity
@@ -106,7 +124,6 @@ public class SecurityConfig {
                             .access(new WebExpressionAuthorizationManager("permitAll()"));
                 })
                 .formLogin(Customizer.withDefaults())
-//                .httpBasic(Customizer.withDefaults())
                 .oauth2Login(Customizer.withDefaults())
                 .logout(config -> config.logoutSuccessUrl("/"))
                 .csrf(csrfConfigurer -> csrfConfigurer

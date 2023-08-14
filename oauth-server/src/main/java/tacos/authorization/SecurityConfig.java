@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import tacos.authorization.users.UserRepository;
 
 import java.util.HashMap;
@@ -32,11 +33,16 @@ public class SecurityConfig {
         return httpSecurity
                 .authorizeHttpRequests(request -> request.anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
+                .csrf(csrfConfigurer -> csrfConfigurer
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"), new AntPathRequestMatcher("/api/**"))
+                )
+                .headers(headers -> headers.frameOptions(config -> config.sameOrigin()))
                 .build();
     }
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
+
         return userRepository::findByUsername;
     }
 

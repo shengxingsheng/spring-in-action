@@ -13,7 +13,6 @@ import tacos.authorization.users.UserRepository;
  */
 @Configuration
 public class DevelopmentConfig {
-
     @Bean
     ApplicationRunner applicationRunner(UserRepository userRepository, PasswordEncoder encoder) {
         return args -> {

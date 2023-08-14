@@ -23,7 +23,7 @@ spring:
       base-path: /api
 logging:
   level:
-    root: debug
+    root: trace
 taco:
   orders:
     page-size: 10
