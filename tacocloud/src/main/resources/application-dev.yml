@@ -16,13 +16,27 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: http://localhost:9000/oauth2/jwks
-          jws-algorithms: RS256
       client:
         registration:
           github:
             clientId: 1d5b6b02971489b180a7
             clientSecret: f972d3e3c004bd50bf2ac970d513f19a56bebc49
             scope: user,user:email
+          taco-client:
+            provider: tacoclient
+            client-id: taco-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            client-authentication-method:
+            redirect-uri: "https://127.0.0.1:8443/login/oauth2/code/{registrationId}"
+            scope: admin,openid
+        provider:
+          tacoclient:
+            authorization-uri: http://authserver:9000/oauth2/authorize
+            token-uri: http://authserver:9000/oauth2/token
+            jwk-set-uri: http://authserver:9000/oauth2/jwks
+            user-info-uri: http://authserver:9000/userinfo  #范围openid，时openid协议的
+            user-name-attribute: sub
   data:
     rest:
       base-path: /api

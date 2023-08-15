@@ -66,7 +66,7 @@ public class SecurityConfig {
         };
     }
 
-    @Bean
+
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService() {
         DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
         return userRequest -> {
@@ -98,8 +98,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> {
                     authorizeHttpRequests
                             .requestMatchers(new AntPathRequestMatcher("/api/**"), new AntPathRequestMatcher("/api/ingredients/**"))
-                            .hasAuthority("SCOPE_writeIngredients");
+                            .hasAuthority("SCOPE_writeIngredients")
+                            .requestMatchers(new AntPathRequestMatcher("/admin/**"))
+                            .hasAuthority("SCOPE_admin")
+                            .anyRequest().authenticated();
+                    ;
                 })
+                .oauth2Login(config -> config.loginPage("/oauth2/authorization/taco-client"))
                 .oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()))
 //                .formLogin(Customizer.withDefaults())
 //                .oauth2Login(Customizer.withDefaults())

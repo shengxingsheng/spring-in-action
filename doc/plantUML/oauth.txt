@@ -1,0 +1,29 @@
+@startuml
+!define client client9010
+!define auth auth9000
+!define resource api8080
+browser++
+browser->client++: get /admin/ingredients
+client->client: /oauth2/authorization/taco-admin-client
+client->browser: redirect
+browser->auth++: get /oauth2/authorize\n?response_type=code&client_id=taco-admin-client\n&redirect_uri=http://127.0.0.1:9010/login/oauth2/code/taco-admin-client\n&scope=writeIngredients+deleteIngredients
+auth->browser: redirect
+browser->auth: get /login
+auth->browser: login page
+browser->auth: post /login (username and password)
+auth->browser: Redirecting to /oauth2/authorize
+browser->auth: post
+auth->browser: Redirecting to /login/oauth2/code/taco-admin-client?
+browser->client: get /login/oauth2/code/taco-admin-client?code
+client->auth: post /oauth2/token
+auth->client: jwt token
+client->auth: post /oauth2/jwks
+auth->client: key
+client->auth: post /userinfo 客户端默认自动发送 scope必须带openid
+client->resource++: get /api/ingredients -H A:Bearer jwtToken
+resource->auth: post /oauth2/jwks
+auth->resource: key
+resource->resource: check jwtToken
+resource->client: json ingredients
+client->browser: json ingredients
+@enduml

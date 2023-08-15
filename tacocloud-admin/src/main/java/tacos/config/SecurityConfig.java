@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeRequests(
                         authorizeRequests -> authorizeRequests.anyRequest().authenticated()
                 )
-                .oauth2Login(withDefaults())
+                .oauth2Login(login -> login.loginPage("/oauth2/authorization/taco-admin-client"))
                 .oauth2Client(withDefaults());
         return http.build();
     }
