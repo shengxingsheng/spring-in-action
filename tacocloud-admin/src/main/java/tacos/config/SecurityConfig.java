@@ -8,7 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.context.annotation.RequestScope;
 import tacos.service.IngredientService;
 import tacos.service.IngredientServiceImpl;
@@ -24,15 +27,23 @@ public class SecurityConfig {
 
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, ClientRegistrationRepository clientRegistrationRepository) throws Exception {
+        OidcClientInitiatedLogoutSuccessHandler logoutSuccessHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+        logoutSuccessHandler.setPostLogoutRedirectUri("{baseUri}/index.html");
         http
-                .authorizeRequests(
-                        authorizeRequests -> authorizeRequests.anyRequest().authenticated()
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers(new AntPathRequestMatcher("/index.html"), new AntPathRequestMatcher("/favicon.ico"))
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .oauth2Login(login -> login.loginPage("/oauth2/authorization/taco-admin-client"))
+                .logout(config -> config
+                        .logoutSuccessHandler(logoutSuccessHandler))
                 .oauth2Client(withDefaults());
         return http.build();
     }
+
 
     @Bean
     @RequestScope

@@ -8,7 +8,7 @@ spring:
         provider:
           tacocloud:
             #issuer-uri 这个代表下面的链接在应用启动时从认证服务器获取
-            #            issuer-uri: http://authserver:9000
+            issuer-uri: http://authserver:9000
             authorization-uri: http://authserver:9000/oauth2/authorize
             token-uri: http://authserver:9000/oauth2/token
             jwk-set-uri: http://authserver:9000/oauth2/jwks
@@ -21,7 +21,7 @@ spring:
             client-secret: secret
             authorization-grant-type: authorization_code
             redirect-uri: "http://127.0.0.1:9010/login/oauth2/code/{registrationId}"
-            scope: writeIngredients,deleteIngredients,openid
+            scope: openid
 logging:
   level:
     root: trace

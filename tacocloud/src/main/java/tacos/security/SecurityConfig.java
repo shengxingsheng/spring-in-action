@@ -1,10 +1,12 @@
 package tacos.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +17,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -23,7 +27,9 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import tacos.User;
 import tacos.UserRepository;
@@ -36,7 +42,10 @@ import java.util.*;
  */
 @Configuration
 @EnableMethodSecurity
+@EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -93,19 +102,26 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain1(HttpSecurity httpSecurity) throws Exception {
-
+//        CookieClearingLogoutHandler cookies = new CookieClearingLogoutHandler("JSESSIONID");
+        HeaderWriterLogoutHandler clearSiteData = new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.ALL));
         return httpSecurity
                 .authorizeHttpRequests(authorizeHttpRequests -> {
                     authorizeHttpRequests
+                            .requestMatchers(new AntPathRequestMatcher("/index.html"), new AntPathRequestMatcher("/favicon.ico"))
+                            .permitAll()
                             .requestMatchers(new AntPathRequestMatcher("/api/**"), new AntPathRequestMatcher("/api/ingredients/**"))
-                            .hasAuthority("SCOPE_writeIngredients")
+                            .access(new WebExpressionAuthorizationManager("hasAuthority('SCOPE_openid')"))
                             .requestMatchers(new AntPathRequestMatcher("/admin/**"))
-                            .hasAuthority("SCOPE_admin")
+                            .access(new WebExpressionAuthorizationManager("hasAuthority('SCOPE_openid')&&hasAuthority('SCOPE_admin')"))
                             .anyRequest().authenticated();
                     ;
                 })
                 .oauth2Login(config -> config.loginPage("/oauth2/authorization/taco-client"))
                 .oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()))
+                .logout(config -> config.addLogoutHandler(clearSiteData)
+                                .logoutSuccessHandler(oidcLogoutSuccessHandler())
+                        //.logoutSuccessUrl("/favicon.ico").permitAll()
+                )
 //                .formLogin(Customizer.withDefaults())
 //                .oauth2Login(Customizer.withDefaults())
                 .csrf(csrfConfigurer -> csrfConfigurer
@@ -115,26 +131,14 @@ public class SecurityConfig {
                 .build();
     }
 
-    //    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    private LogoutSuccessHandler oidcLogoutSuccessHandler() {
+        OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
+                new OidcClientInitiatedLogoutSuccessHandler(this.clientRegistrationRepository);
 
-        return httpSecurity
-                .authorizeHttpRequests(authorizeHttpRequests -> {
-                    authorizeHttpRequests
-                            .requestMatchers(new AntPathRequestMatcher("/admin"), new AntPathRequestMatcher("/admin/**"))
-                            .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN')"))
-                            .requestMatchers(new AntPathRequestMatcher("/orders"), new AntPathRequestMatcher("/orders/**"), new AntPathRequestMatcher("/design"), new AntPathRequestMatcher("/design/**"))
-                            .access(new WebExpressionAuthorizationManager("hasRole('ROLE_USER')"))
-                            .requestMatchers(new AntPathRequestMatcher("/"), AntPathRequestMatcher.antMatcher("/**"))
-                            .access(new WebExpressionAuthorizationManager("permitAll()"));
-                })
-                .formLogin(Customizer.withDefaults())
-                .oauth2Login(Customizer.withDefaults())
-                .logout(config -> config.logoutSuccessUrl("/"))
-                .csrf(csrfConfigurer -> csrfConfigurer
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"), new AntPathRequestMatcher("/api/**"))
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .headers(headers -> headers.frameOptions(config -> config.sameOrigin()))
-                .build();
+        // Sets the location that the End-User's User Agent will be redirected to
+        // after the logout has been performed at the Provider
+        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}/index.html");
+
+        return oidcLogoutSuccessHandler;
     }
 }

@@ -1,5 +1,6 @@
 package tacos.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -54,10 +55,23 @@ public class AdminController {
 
     @GetMapping("/")
     public String access(@RegisteredOAuth2AuthorizedClient("taco-client") OAuth2AuthorizedClient authorizedClient,
-                         @AuthenticationPrincipal DefaultOidcUser user) {
+                         @AuthenticationPrincipal DefaultOidcUser user,
+                         HttpSession session) {
         log.error("getIdToken" + user.getIdToken());
         log.error("Token" + user.getIdToken().getTokenValue());
         OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
         return accessToken.getTokenValue() + "\n" + user.getIdToken().getTokenValue();
     }
+
+    @GetMapping("/home")
+    public String home(@RegisteredOAuth2AuthorizedClient("taco-client") OAuth2AuthorizedClient authorizedClient,
+                       @AuthenticationPrincipal DefaultOidcUser user,
+                       HttpSession session) {
+        log.error("getIdToken" + user.getIdToken());
+        log.error("Token" + user.getIdToken().getTokenValue());
+        OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
+        return accessToken.getTokenValue() + "\n" + user.getIdToken().getTokenValue();
+    }
+
+
 }

@@ -70,7 +70,6 @@ public class AuthorizationServerConfig {
                 // Form login handles the redirect to the login page from the
                 // authorization server filter chain
                 .formLogin(Customizer.withDefaults());
-
         return http.build();
     }
 
@@ -84,6 +83,7 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("http://127.0.0.1:9010/login/oauth2/code/taco-admin-client")
+                .postLogoutRedirectUris(set -> set.add("http://127.0.0.1:9010/index.html"))
                 .scope("writeIngredients")
                 .scope("deleteIngredients")
                 .scope(OidcScopes.OPENID)
@@ -110,6 +110,7 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("https://127.0.0.1:8443/login/oauth2/code/taco-client")
+                .postLogoutRedirectUris(set -> set.add("https://127.0.0.1:8443/index.html"))
                 .scope("admin")
                 .scope(OidcScopes.OPENID)
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())

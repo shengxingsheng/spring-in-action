@@ -1,0 +1,61 @@
+@startuml
+/'
+网址省去http://
+授权请求省去具体参数
+模拟场景：用户先访问a系统的受保护资源/blogs,再访问b系统受保护资源/news
+预期效果：用户访问/blogs要登录，再访问/news不用登录
+'/
+user++
+browser++
+a++
+b++
+user->browser: 输入网址a.com/blogs 回车
+b--
+browser->a: GET a.com/blogs
+a->browser: redirect /oauth2/authorization/a
+browser->a: GET a.com/oauth2/authorization/a
+a->browser: redirect /oauth2/authorize \n (请求授权码)
+browser->auth++: GET auth.com/oauth2/authorize
+auth->browser: redirect /login
+browser->auth: GET auth.com/login
+auth->browser: return login html
+user->browser: input username and password
+browser->auth: POST auth.com/login
+auth->auth: 验证凭证，并记录到session中
+auth->browser: redirect a.com/login/oauth2/code/a \n (参数中有授权码)
+browser->a: GET auth.com/login/oauth2/code/a (参数中有授权码)
+
+a->auth: POST auth.com/oauth2/token
+auth->a: return a json(包含访问令牌jwt token)
+a->auth: POST auth.com/oauth2/jwks
+auth->a: return jwt的签名密钥
+a->auth: POST auth.com/userinfo
+auth->a: return OIDC userinfo(是一个jwt)
+a->a: 验证token，并保存至session中
+
+a->browser: redirect /blogs
+browser->a: GET a.com/blogs
+a->a: 验证session中有token,放行
+a->browser: return blogs
+a--
+
+user->browser: 输入网址b.com/news 回车
+browser->b++: GET b.com/news
+b->b: session中没有用户信息
+b->browser: redirect auth.com/oauth2/authorize \n (请求授权码)
+b->auth: GET auth.com/oauth2/authorize
+auth->auth: 检查session中有已登录过的用户信息
+auth->browser: redirect b.com/login/oauth2/code/b \n (参数中有授权码)
+browser->b: GET b.com/login/oauth2/code/b
+b->auth: POST auth.com/oauth2/token
+auth->b: return a json(包含访问令牌jwt token)
+b->auth: POST auth.com/oauth2/jwks
+auth->b: return jwt的签名密钥
+b->auth: POST auth.com/userinfo
+auth->b: return OIDC userinfo(是一个jwt)
+b->b: 验证token，并生成用户信息保存至session中(属性为SecurityContextImpl)
+b->browser: redirect b.com/news
+browser->b: GET b.com/news
+b->b:验证session中有token
+b->browser: return news
+@enduml

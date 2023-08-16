@@ -27,11 +27,11 @@ spring:
             client-id: taco-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            client-authentication-method:
             redirect-uri: "https://127.0.0.1:8443/login/oauth2/code/{registrationId}"
-            scope: admin,openid
+            scope: openid
         provider:
           tacoclient:
+            issuer-uri: http://authserver:9000
             authorization-uri: http://authserver:9000/oauth2/authorize
             token-uri: http://authserver:9000/oauth2/token
             jwk-set-uri: http://authserver:9000/oauth2/jwks
@@ -40,10 +40,11 @@ spring:
   data:
     rest:
       base-path: /api
-#      default-media-type: application/json
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
 logging:
   level:
     root: trace
-taco:
-  orders:
-    page-size: 10
+
