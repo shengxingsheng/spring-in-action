@@ -15,7 +15,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:9000/oauth2/jwks
+          jwk-set-uri: http://authserver:9000/oauth2/jwks
       client:
         registration:
           github:
@@ -27,7 +27,7 @@ spring:
             client-id: taco-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: "https://127.0.0.1:8443/login/oauth2/code/{registrationId}"
+            redirect-uri: "https://taco:8443/login/oauth2/code/{registrationId}"
             scope: openid
         provider:
           tacoclient:

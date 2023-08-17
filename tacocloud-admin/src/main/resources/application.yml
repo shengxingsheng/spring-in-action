@@ -14,13 +14,14 @@ spring:
             jwk-set-uri: http://authserver:9000/oauth2/jwks
             user-info-uri: http://authserver:9000/userinfo  #范围openid，时openid协议的
             user-name-attribute: sub
+
         registration:
           taco-admin-client:
             provider: tacocloud
             client-id: taco-admin-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:9010/login/oauth2/code/{registrationId}"
+            redirect-uri: "http://tacoadmin:9010/login/oauth2/code/{registrationId}"
             scope: openid
 logging:
   level:
