@@ -26,6 +26,7 @@
         <module>ClientA</module>
         <module>ClientB</module>
         <module>simple-flow</module>
+        <module>tacocloud-email</module>
     </modules>
     <properties>
         <java.version>17</java.version>

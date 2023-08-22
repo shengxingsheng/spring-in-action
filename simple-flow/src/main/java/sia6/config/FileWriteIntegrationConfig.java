@@ -2,10 +2,9 @@ package sia6.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.annotation.Transformer;
-import org.springframework.integration.core.GenericTransformer;
-import org.springframework.integration.file.FileWritingMessageHandler;
+import org.springframework.integration.dsl.IntegrationFlow;
+import org.springframework.integration.dsl.MessageChannels;
+import org.springframework.integration.file.dsl.Files;
 import org.springframework.integration.file.support.FileExistsMode;
 
 import java.io.File;
@@ -18,18 +17,13 @@ import java.io.File;
 public class FileWriteIntegrationConfig {
 
     @Bean
-    @Transformer(inputChannel = "textInChannel", outputChannel = "fileWriteChannel")
-    public GenericTransformer<String, String> upperCaseTransformer() {
-        return source -> source.toUpperCase();
-    }
-
-    @Bean
-    @ServiceActivator(inputChannel = "fileWriteChannel")
-    public FileWritingMessageHandler fileWrite() {
-        FileWritingMessageHandler handler = new FileWritingMessageHandler(new File("C:\\Users\\sxs\\projects\\IdeaProjects\\demo\\taco-cloud\\doc\\test"));
-        handler.setExpectReply(false);
-        handler.setFileExistsMode(FileExistsMode.APPEND);
-        handler.setAppendNewLine(true);
-        return handler;
+    public IntegrationFlow fileWriteFlow() {
+        return IntegrationFlow
+                .from(MessageChannels.direct("textInChannel"))
+                .<String, String>transform(t -> t.toUpperCase())
+                .handle(Files.outboundAdapter(new File("C:\\Users\\sxs\\projects\\IdeaProjects\\demo\\taco-cloud\\doc\\test"))
+                        .fileExistsMode(FileExistsMode.APPEND)
+                        .appendNewLine(true))
+                .get();
     }
 }

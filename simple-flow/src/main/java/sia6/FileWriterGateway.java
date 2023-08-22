@@ -9,9 +9,8 @@ import org.springframework.messaging.handler.annotation.Header;
  * @date 2023/8/19 21:51
  */
 
-@MessagingGateway(defaultRequestChannel = "testInChannel")
+@MessagingGateway(defaultRequestChannel = "textInChannel")
 public interface FileWriterGateway {
-
     void writeFile(@Header(FileHeaders.FILENAME) String fileName, String data);
 
 }
