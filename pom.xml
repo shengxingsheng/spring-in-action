@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.sxs</groupId>
-    <artifactId>taco-cloud</artifactId>
+    <artifactId>spring-in-action</artifactId>
     <version>0.0.7-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>taco-cloud</name>
-    <description>taco-cloud</description>
+    <name>spring-in-action</name>
+    <description>spring-in-action</description>
     <modules>
         <module>tacocloud-domain</module>
         <module>tacocloud-api</module>
@@ -27,6 +27,7 @@
         <module>ClientB</module>
         <module>simple-flow</module>
         <module>tacocloud-email</module>
+        <module>reactor-fun</module>
     </modules>
     <properties>
         <java.version>17</java.version>

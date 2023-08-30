@@ -9,8 +9,7 @@
         <version>0.0.7-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.sxs</groupId>
-    <artifactId>tacocloud-api</artifactId>
+    <artifactId>reactor-fun</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,13 +17,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-
         <dependency>
-            <groupId>org.sxs</groupId>
-            <artifactId>tacocloud-data</artifactId>
-            <version>0.0.7-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
