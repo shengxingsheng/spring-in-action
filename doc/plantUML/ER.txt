@@ -21,7 +21,7 @@ entity Taco{
     *createdAt: timestamp
 }
 entity Ingredient_Ref{
-     taco: bigint
+     tacos: bigint
      taco_key: bigint
      ingredient: varchar
 }

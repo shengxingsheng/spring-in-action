@@ -32,26 +32,26 @@ public class TacoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Taco> tacoByID(@PathVariable("id") Long id) {
-        Optional<Taco> taco = tacoRepository.findById(id);
-        return ResponseEntity.of(taco);
+        Optional<Taco> tacos = tacoRepository.findById(id);
+        return ResponseEntity.of(tacos);
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<Taco> postTaco(@RequestBody Taco taco) {
+    public ResponseEntity<Taco> postTaco(@RequestBody Taco tacos) {
 
-        if (taco.getId() != null) {
+        if (tacos.getId() != null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(tacoRepository.save(taco), HttpStatus.CREATED);
+        return new ResponseEntity<>(tacoRepository.save(tacos), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}", consumes = "application/json")
-    public ResponseEntity<Taco> putTaco(@PathVariable("id") Long id, @RequestBody Taco taco) {
+    public ResponseEntity<Taco> putTaco(@PathVariable("id") Long id, @RequestBody Taco tacos) {
 
         if (id != null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(tacoRepository.save(taco), HttpStatus.OK);
+        return new ResponseEntity<>(tacoRepository.save(tacos), HttpStatus.OK);
     }
 }
 

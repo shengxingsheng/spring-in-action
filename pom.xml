@@ -28,6 +28,7 @@
         <module>simple-flow</module>
         <module>tacocloud-email</module>
         <module>reactor-fun</module>
+        <module>tacocloud-api-webflux</module>
     </modules>
     <properties>
         <java.version>17</java.version>

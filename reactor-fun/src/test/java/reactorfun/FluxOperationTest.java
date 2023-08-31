@@ -11,7 +11,7 @@ import reactor.util.function.Tuple2;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  * @author sxs
  * @date 8/30/2023 18:53
  */
-public class FluxCreationTest {
+public class FluxOperationTest {
 
     @Test
     void createAFlow_just() {
@@ -162,7 +162,8 @@ public class FluxCreationTest {
                         "one", "two", "skip a few", "ninety nine", "one hundred")
                 .delayElements(Duration.ofSeconds(1))
                 .take(Duration.ofSeconds(4));
-        countFlux.subscribe(System.out::println);
+        countFlux.subscribe(f-> System.out.println(f+" "+Thread.currentThread().getName()));
+        System.out.println(Thread.currentThread().getName());
         Thread.sleep(6000);
     }
 
@@ -190,6 +191,7 @@ public class FluxCreationTest {
                 .just("Michael Jordan", "Scottie Pippen", "Steve Kerr")
                 .map(n -> {
                     String[] split = n.split("\\s");
+                    System.out.println(Thread.currentThread().getName());
                     return new Player(split[0], split[1]);
                 });
         StepVerifier.create(playerFlux)
@@ -204,6 +206,10 @@ public class FluxCreationTest {
         private final String firstName;
         private final String lastName;
     }
+
+    /**
+     * 并行处理
+     */
     @Test
     public void flatMap() {
         Flux<Player> playerFlux = Flux
@@ -211,20 +217,81 @@ public class FluxCreationTest {
                 .flatMap(n -> Mono.just(n)
                         .map(p -> {
                             String[] split = p.split("\\s");
+                            System.out.println(Thread.currentThread().getName());
                             return new Player(split[0], split[1]);
                         })
                         .subscribeOn(Schedulers.parallel())
                 );
-
         List<Player> playerList = Arrays.asList(
                 new Player("Michael", "Jordan"),
                 new Player("Scottie", "Pippen"),
                 new Player("Steve", "Kerr"));
-
         StepVerifier.create(playerFlux)
                 .expectNextMatches(p -> playerList.contains(p))
                 .expectNextMatches(p -> playerList.contains(p))
                 .expectNextMatches(p -> playerList.contains(p))
+                .verifyComplete();
+        playerFlux.subscribe(System.out::println);
+    }
+
+    @Test
+    void buffer() {
+        Flux<Integer> integerFlux = Flux.just(1, 2, 3, 4, 5,6, 7, 8, 9, 10).log();
+        Flux<List<Integer>> buffer = integerFlux.buffer(3).log();
+        buffer.subscribe(System.out::println);
+    }
+
+    @Test
+    void bufferAndFlatMap() {
+        Flux<String> just = Flux.just(
+                        "apple", "orange", "banana", "kiwi", "strawberry")
+                .buffer(3)
+                .flatMap(f -> Flux.fromIterable(f)
+                        .map(String::toUpperCase)
+                        .subscribeOn(Schedulers.parallel())
+                        .log());
+        just.subscribe(System.out::println);
+    }
+
+    @Test
+    void collectList() {
+        Flux<String> just = Flux.just(
+                "apple", "orange", "banana", "kiwi", "strawberry");
+        Mono<List<String>> mono = just.collectList();
+        mono.subscribe(System.out::println);
+    }
+    @Test
+    void collectMap() {
+        Flux<String> just = Flux.just(
+                "apple", "orange", "banana", "kiwi", "strawberry");
+        Mono<Map<Character, String>> mono = just.collectMap(k -> k.charAt(0),v->"apple");
+        mono.subscribe(System.out::println);
+    }
+
+    @Test
+    void all() {
+        Flux<String> animalFlux = Flux.just(
+                "aardvark", "elephant", "koala", "eagle", "kangaroo");
+        Mono<Boolean> mono = animalFlux.all(f -> f.contains("a"));
+        StepVerifier.create(mono)
+                .expectNext(true)
+                .verifyComplete();
+        mono = animalFlux.all(f -> f.contains("d"));
+        StepVerifier.create(mono)
+                .expectNext(false)
+                .verifyComplete();
+    }
+    @Test
+    void any() {
+        Flux<String> animalFlux = Flux.just(
+                "aardvark", "elephant", "koala", "eagle", "kangaroo");
+        Mono<Boolean> mono = animalFlux.any(f -> f.contains("a"));
+        StepVerifier.create(mono)
+                .expectNext(true)
+                .verifyComplete();
+        mono = animalFlux.any(f -> f.contains("d"));
+        StepVerifier.create(mono)
+                .expectNext(true)
                 .verifyComplete();
     }
 }
