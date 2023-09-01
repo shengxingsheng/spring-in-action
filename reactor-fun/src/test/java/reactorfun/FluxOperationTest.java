@@ -2,6 +2,7 @@ package reactorfun;
 
 import lombok.Data;
 import org.junit.jupiter.api.Test;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -162,8 +163,10 @@ public class FluxOperationTest {
                         "one", "two", "skip a few", "ninety nine", "one hundred")
                 .delayElements(Duration.ofSeconds(1))
                 .take(Duration.ofSeconds(4));
-        countFlux.subscribe(f-> System.out.println(f+" "+Thread.currentThread().getName()));
+        Disposable subscribe = countFlux.subscribe(f -> System.out.println(f + " " + Thread.currentThread().getName()));
         System.out.println(Thread.currentThread().getName());
+        subscribe.dispose();
+        System.out.println(subscribe.isDisposed());
         Thread.sleep(6000);
     }
 
