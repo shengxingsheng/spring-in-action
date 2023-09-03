@@ -1,4 +1,17 @@
 spring:
   rsocket:
     server:
+      transport: websocket
+      mapping-path: /rsocket
       port: 7000
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: "*"
+
+info:
+  contact:
+    email: xx@gmail.com
+    phone: 123xxx

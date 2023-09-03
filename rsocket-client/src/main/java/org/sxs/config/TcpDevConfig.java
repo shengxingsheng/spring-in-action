@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.messaging.rsocket.RSocketRequester;
 import org.sxs.domain.Alert;
 import org.sxs.domain.GratuityIn;
@@ -19,8 +20,9 @@ import java.time.Instant;
  * @date 9/2/2023 10:25
  */
 @Configuration
+@Profile("tcp")
 @Slf4j
-public class DevConfig {
+public class TcpDevConfig {
 
     @Bean
     public ApplicationRunner requestResponse(RSocketRequester.Builder builder) {
