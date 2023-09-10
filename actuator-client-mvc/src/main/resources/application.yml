@@ -1,0 +1,26 @@
+server:
+  port: 10012
+spring:
+  application:
+    name: client-mvc
+  boot:
+    admin:
+      client:
+        url: http://localhost:10010
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+info:
+  app:
+    desc: "user spring mvc"
+
+

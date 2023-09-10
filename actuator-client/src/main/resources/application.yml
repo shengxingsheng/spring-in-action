@@ -1,0 +1,43 @@
+server:
+  port: 10011
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  boot:
+    admin:
+      client:
+        url: http://localhost:10010
+        username: admin
+        password: 123123
+        instance:
+          metadata:
+            user.name: ${spring.security.user.name}
+            user.password: ${spring.security.user.password}
+  application:
+    name: client-webflux
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+    git:
+      mode: simple
+  endpoint:
+    env:
+      show-values: always
+info:
+  app:
+    name: "sxs"
+    num: [1,2,3]
+  app1:
+    name1: "sxs1"
+  app2: "2"

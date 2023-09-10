@@ -32,6 +32,9 @@
         <module>tacocloud-R2DBC</module>
         <module>rsocket-server</module>
         <module>rsocket-client</module>
+        <module>actuator-server</module>
+        <module>actuator-client</module>
+        <module>actuator-client-mvc</module>
     </modules>
     <properties>
         <java.version>17</java.version>
