@@ -8,9 +8,8 @@
         <artifactId>spring-in-action</artifactId>
         <version>0.0.7-SNAPSHOT</version>
     </parent>
-
+    <packaging>jar</packaging>
     <artifactId>actuator-server</artifactId>
-
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
